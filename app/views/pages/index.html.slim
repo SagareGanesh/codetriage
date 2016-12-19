@@ -30,6 +30,9 @@ hr.section-break
         - unless lang.nil?
           li = link_to lang, "#", data: { toggle: "tab", language: lang }
 
+  .spinner
+    = image_tag('spinner.gif')
+
   section.repo-list-with-pagination
     = render "repos_with_pagination", repos: @repos
 
@@ -38,6 +41,7 @@ hr.section-break
 
 javascript:
   $(document).ready(function(){
+    $('.spinner').hide()
 
     $(".types-filter-button").click(function() {
       $(".types-filter").toggle();
@@ -59,9 +63,10 @@ javascript:
             "Content-Type": "application/json; charset=utf-8"
           },
           beforeSend: function () {
-            // go
+            $('.spinner').show()
           },
         }).done(function(data) {
+          $('.spinner').hide()
           $('.repo-list-with-pagination').html(data["html"]);
         }).fail(function(data){
           console.log(data);
